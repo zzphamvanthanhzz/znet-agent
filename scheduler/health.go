@@ -24,6 +24,7 @@ func (s *Scheduler) CheckHealth() {
 				settings := make(map[string]interface{})
 				settings["hostname"] = h
 				settings["timeout"] = float64(2)
+				settings["product"] = "TEST"
 				hchk, err := checks.NewFunctionPing(settings)
 				if err != nil {
 					log.Error(3, "Error creating healthcheck host: %s failed with err: %s", h, err.Error())
