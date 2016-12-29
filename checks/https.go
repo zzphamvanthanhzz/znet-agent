@@ -46,6 +46,7 @@ func (r *HTTPSResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Met
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -63,6 +64,7 @@ func (r *HTTPSResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Met
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -80,6 +82,7 @@ func (r *HTTPSResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Met
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -97,6 +100,7 @@ func (r *HTTPSResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Met
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -114,6 +118,7 @@ func (r *HTTPSResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Met
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -131,6 +136,7 @@ func (r *HTTPSResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Met
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -146,6 +152,7 @@ func (r *HTTPSResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Met
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -163,6 +170,7 @@ func (r *HTTPSResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Met
 			Mtype:    "rate",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -180,6 +188,7 @@ func (r *HTTPSResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Met
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -197,6 +206,7 @@ func (r *HTTPSResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Met
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -214,6 +224,7 @@ func (r *HTTPSResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Met
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -243,6 +254,7 @@ type FunctionHTTPS struct {
 	ExpectRegex  string        `json:"expectregex"` //string wants to be appears (error: 0 ...)
 	Body         string        `json:"body"`
 	Timeout      time.Duration `json:"timeout"`
+	GetAll       bool          `json:"getall"`
 }
 
 func NewFunctionHTTPS(settings map[string]interface{}) (*FunctionHTTPS, error) {
@@ -343,7 +355,18 @@ func NewFunctionHTTPS(settings map[string]interface{}) (*FunctionHTTPS, error) {
 		}
 	}
 
-	return &FunctionHTTPS{Product: product, Host: h, Path: p, Port: pt, ValidateCert: v, Method: m, Headers: hds, ExpectRegex: r, Body: b, Timeout: time.Duration(t) * time.Second}, nil
+	a := false
+	getall, ok := settings["getall"]
+	if ok {
+		a, ok = getall.(bool)
+		if !ok {
+			return nil, errors.New("HTTPS: getall must be boolean")
+		}
+	}
+
+	return &FunctionHTTPS{Product: product, Host: h, Path: p, Port: pt, ValidateCert: v,
+		Method: m, Headers: hds, ExpectRegex: r, Body: b,
+		Timeout: time.Duration(t) * time.Second, GetAll: a}, nil
 }
 
 func (p *FunctionHTTPS) Run() (CheckResult, error) {
@@ -488,7 +511,7 @@ func (p *FunctionHTTPS) Run() (CheckResult, error) {
 			}
 		}
 		datasize += count
-		if datasize >= Limit {
+		if !p.GetAll && datasize >= Limit {
 			break
 		}
 	}
@@ -519,11 +542,11 @@ func (p *FunctionHTTPS) Run() (CheckResult, error) {
 	statuscode := float64(response.StatusCode)
 	result.StatusCode = &statuscode
 	if statuscode < 100 || statuscode >= 600 {
-		msg := fmt.Sprintf("HTTPS: Invalid status code %f", statuscode)
+		msg := fmt.Sprintf("HTTPS: Invalid status code %f from conn: %s", statuscode, sockaddr)
 		result.Error = &msg
 		return result, nil
 	} else if statuscode != 200 {
-		msg := fmt.Sprintf("HTTPS: Error code %f", statuscode)
+		msg := fmt.Sprintf("HTTPS: Error code %f from conn: %s", statuscode, sockaddr)
 		result.Error = &msg
 		return result, nil
 	}
@@ -555,7 +578,7 @@ func (p *FunctionHTTPS) Run() (CheckResult, error) {
 			bodydecode = body.String()
 		}
 		if !reg.MatchString(bodydecode) {
-			msg := "ExpectRegex not match"
+			msg := fmt.Sprintf("HTTPS: ExpectRegex not match from conn: %s", sockaddr)
 			result.Error = &msg
 			return result, nil
 		}

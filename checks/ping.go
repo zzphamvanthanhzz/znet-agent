@@ -43,6 +43,7 @@ func (r *PingResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -60,6 +61,7 @@ func (r *PingResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -77,6 +79,7 @@ func (r *PingResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -94,6 +97,7 @@ func (r *PingResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -111,6 +115,7 @@ func (r *PingResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -128,6 +133,7 @@ func (r *PingResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -143,6 +149,7 @@ func (r *PingResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),

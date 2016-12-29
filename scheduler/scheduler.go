@@ -114,6 +114,7 @@ func (i *CheckInstance) run(t time.Time) {
 				Timestamp: t.UnixNano() / int64(time.Millisecond),
 				Message:   msg,
 				Tags: map[string]string{
+					"product":      i.Check.Settings["product"].(string),
 					"endpoint":     i.Check.Slug,
 					"collector":    probe.Self.Slug,
 					"monitor_type": string(i.Check.Type),
@@ -134,6 +135,7 @@ func (i *CheckInstance) run(t time.Time) {
 			Timestamp: t.UnixNano() / int64(time.Millisecond),
 			Message:   "Monitor now Ok.",
 			Tags: map[string]string{
+				"product":      i.Check.Settings["product"].(string),
 				"endpoint":     i.Check.Slug,
 				"collector":    probe.Self.Slug,
 				"monitor_type": string(i.Check.Type),
@@ -159,6 +161,7 @@ func (i *CheckInstance) run(t time.Time) {
 		Mtype:    "gauge",
 		Time:     t.Unix(),
 		Tags: []string{
+			fmt.Sprintf("product: %s", i.Check.Settings["product"]),
 			fmt.Sprintf("endpoint:%s", i.Check.Slug),
 			fmt.Sprintf("monitor_type:%s", i.Check.Type),
 			fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -173,6 +176,7 @@ func (i *CheckInstance) run(t time.Time) {
 		Mtype:    "gauge",
 		Time:     t.Unix(),
 		Tags: []string{
+			fmt.Sprintf("product: %s", i.Check.Settings["product"]),
 			fmt.Sprintf("endpoint:%s", i.Check.Slug),
 			fmt.Sprintf("monitor_type:%s", i.Check.Type),
 			fmt.Sprintf("probe:%s", probe.Self.Slug),

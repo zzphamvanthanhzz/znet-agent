@@ -45,6 +45,7 @@ func (r *HTTPResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -62,6 +63,7 @@ func (r *HTTPResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -79,6 +81,7 @@ func (r *HTTPResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -96,6 +99,7 @@ func (r *HTTPResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -113,6 +117,7 @@ func (r *HTTPResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -130,6 +135,7 @@ func (r *HTTPResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -145,6 +151,7 @@ func (r *HTTPResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -162,6 +169,7 @@ func (r *HTTPResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 			Mtype:    "rate",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -179,6 +187,7 @@ func (r *HTTPResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -196,6 +205,7 @@ func (r *HTTPResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 			Mtype:    "gauge",
 			Time:     t.Unix(),
 			Tags: []string{
+				fmt.Sprintf("product: %s", check.Settings["product"]),
 				fmt.Sprintf("endpoint:%s", check.Slug),
 				fmt.Sprintf("monitor_type:%s", check.Type),
 				fmt.Sprintf("probe:%s", probe.Self.Slug),
@@ -224,6 +234,7 @@ type FunctionHTTP struct {
 	ExpectRegex string        `json:"expectregex"` //string wants to be appears (error: 0 ...)
 	Body        string        `json:"body"`
 	Timeout     time.Duration `json:"timeout"`
+	GetAll      bool          `json:"getall"`
 }
 
 func NewFunctionHTTP(settings map[string]interface{}) (*FunctionHTTP, error) {
@@ -316,7 +327,18 @@ func NewFunctionHTTP(settings map[string]interface{}) (*FunctionHTTP, error) {
 		}
 	}
 
-	return &FunctionHTTP{Product: product, Host: h, Path: p, Port: pt, Method: m, Headers: hds, ExpectRegex: r, Body: b, Timeout: time.Duration(t) * time.Second}, nil
+	a := false
+	getall, ok := settings["getall"]
+	if ok {
+		a, ok = getall.(bool)
+		if !ok {
+			return nil, errors.New("HTTP: getall must be boolean")
+		}
+	}
+
+	return &FunctionHTTP{Product: product, Host: h, Path: p, Port: pt, Method: m,
+		Headers: hds, ExpectRegex: r, Body: b, Timeout: time.Duration(t) * time.Second,
+		GetAll: a}, nil
 }
 
 func (p *FunctionHTTP) Run() (CheckResult, error) {
@@ -451,7 +473,7 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 			}
 		}
 		datasize += count
-		if datasize >= Limit {
+		if !p.GetAll && datasize >= Limit {
 			break
 		}
 	}
@@ -479,11 +501,11 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 	statuscode := float64(response.StatusCode)
 	result.StatusCode = &statuscode
 	if statuscode < 100 || statuscode >= 600 {
-		msg := fmt.Sprintf("HTTP: Invalid status code %f", statuscode)
+		msg := fmt.Sprintf("HTTP: Invalid status code %f from conn: %s", statuscode, sockaddr)
 		result.Error = &msg
 		return result, nil
 	} else if statuscode != 200 {
-		msg := fmt.Sprintf("HTTPS: Error code %f", statuscode)
+		msg := fmt.Sprintf("HTTPS: Error code %f from conn: %s", statuscode, sockaddr)
 		result.Error = &msg
 		return result, nil
 	}
@@ -515,7 +537,7 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 			bodydecode = body.String()
 		}
 		if !reg.MatchString(bodydecode) {
-			msg := "ExpectRegex not match"
+			msg := fmt.Sprintf("HTTP: ExpectRegex not match from conn: %s", sockaddr)
 			result.Error = &msg
 			return result, nil
 		}
