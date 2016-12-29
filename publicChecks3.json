@@ -124,4 +124,25 @@
     "enabled":true,
     "offset":1,
     "updated":"2016-01-27T18:11:47Z"
+  },{
+    "id": 7,
+    "orgId":1,
+    "endpointId":7,
+    "endpointSlug":"videochannel_cache12_vcdn_vn",
+    "type":"http",
+    "state":2,
+    "settings": {
+      "hostname": "videochannel.cache12.vcdn.vn",
+      "product": "MEDIA-CDN",
+      "port":  80,
+      "path": "/a0c29a18a65d4f03164c?&.mp4",
+      "method":"GET",
+      "expectRegex":"",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
+      "getall": true
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
   }]
