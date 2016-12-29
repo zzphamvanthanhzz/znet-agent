@@ -504,7 +504,7 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 		msg := fmt.Sprintf("HTTP: Invalid status code %f from conn: %s", statuscode, sockaddr)
 		result.Error = &msg
 		return result, nil
-	} else if statuscode != 200 {
+	} else if statuscode != 200 && statuscode != 302 {
 		msg := fmt.Sprintf("HTTPS: Error code %f from conn: %s", statuscode, sockaddr)
 		result.Error = &msg
 		return result, nil
