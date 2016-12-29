@@ -7,6 +7,7 @@
     "state":2,
     "settings": { 
       "hostname": "wpa.zaloapp.com",
+      "product": "ZALO",
       "port":  443,
       "path": "/",
       "method":"GET",
@@ -26,6 +27,7 @@
     "state":2,
     "settings": { 
       "hostname": "www.facebook.com",
+      "product": "TEST",
       "port":  443,
       "path": "/",
       "method":"GET",
@@ -45,6 +47,7 @@
     "state":2,
     "settings": { 
       "hostname": "www.baomoi.com",
+      "product": "NEWS",
       "port":  80,
       "path": "/",
       "method":"GET",
@@ -64,6 +67,7 @@
     "state":2,
     "settings": { 
       "hostname": "zalo.me",
+      "product": "ZALO",
       "port":  443,
       "path": "/",
       "method":"GET",
@@ -74,4 +78,24 @@
     "enabled":true,
     "offset":1,
     "updated":"2016-01-27T18:11:47Z" 
+  },{
+    "id": 5,
+    "orgId":1,
+    "endpointId":5,
+    "endpointSlug":"mp3_zing_vn",
+    "type":"http",
+    "state":2,
+    "settings": {
+      "hostname": "mp3.zing.vn",
+      "product": "MEDIA",
+      "port":  80,
+      "path": "/",
+      "method":"GET",
+      "expectRegex":"",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n"
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
   }]

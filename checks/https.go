@@ -39,7 +39,7 @@ func (r *HTTPSResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Met
 	if r.DNS != nil {
 		metrics = append(metrics, &schema.MetricData{
 			OrgId:    int(check.OrgId),
-			Name:     fmt.Sprintf("worldping.%s.%s.https.dns", check.Slug, probe.Self.Slug),
+			Name:     fmt.Sprintf("worldping.%s.%s.%s.https.dns", check.Settings["product"], check.Slug, probe.Self.Slug),
 			Metric:   "worldping.https.dns",
 			Interval: int(check.Frequency),
 			Unit:     "ms",
@@ -56,7 +56,7 @@ func (r *HTTPSResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Met
 	if r.Connect != nil {
 		metrics = append(metrics, &schema.MetricData{
 			OrgId:    int(check.OrgId),
-			Name:     fmt.Sprintf("worldping.%s.%s.https.connect", check.Slug, probe.Self.Slug),
+			Name:     fmt.Sprintf("worldping.%s.%s.%s.https.connect", check.Settings["product"], check.Slug, probe.Self.Slug),
 			Metric:   "worldping.https.connect",
 			Interval: int(check.Frequency),
 			Unit:     "ms",
@@ -73,7 +73,7 @@ func (r *HTTPSResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Met
 	if r.Send != nil {
 		metrics = append(metrics, &schema.MetricData{
 			OrgId:    int(check.OrgId),
-			Name:     fmt.Sprintf("worldping.%s.%s.https.send", check.Slug, probe.Self.Slug),
+			Name:     fmt.Sprintf("worldping.%s.%s.%s.https.send", check.Settings["product"], check.Slug, probe.Self.Slug),
 			Metric:   "worldping.https.send",
 			Interval: int(check.Frequency),
 			Unit:     "ms",
@@ -90,7 +90,7 @@ func (r *HTTPSResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Met
 	if r.Wait != nil {
 		metrics = append(metrics, &schema.MetricData{
 			OrgId:    int(check.OrgId),
-			Name:     fmt.Sprintf("worldping.%s.%s.https.wait", check.Slug, probe.Self.Slug),
+			Name:     fmt.Sprintf("worldping.%s.%s.%s.https.wait", check.Settings["product"], check.Slug, probe.Self.Slug),
 			Metric:   "worldping.https.wait",
 			Interval: int(check.Frequency),
 			Unit:     "ms",
@@ -107,7 +107,7 @@ func (r *HTTPSResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Met
 	if r.Recv != nil {
 		metrics = append(metrics, &schema.MetricData{
 			OrgId:    int(check.OrgId),
-			Name:     fmt.Sprintf("worldping.%s.%s.https.recv", check.Slug, probe.Self.Slug),
+			Name:     fmt.Sprintf("worldping.%s.%s.%s.https.recv", check.Settings["product"], check.Slug, probe.Self.Slug),
 			Metric:   "worldping.https.recv",
 			Interval: int(check.Frequency),
 			Unit:     "ms",
@@ -124,7 +124,7 @@ func (r *HTTPSResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Met
 	if r.Total != nil {
 		metrics = append(metrics, &schema.MetricData{
 			OrgId:    int(check.OrgId),
-			Name:     fmt.Sprintf("worldping.%s.%s.https.total", check.Slug, probe.Self.Slug),
+			Name:     fmt.Sprintf("worldping.%s.%s.%s.https.total", check.Settings["product"], check.Slug, probe.Self.Slug),
 			Metric:   "worldping.https.total",
 			Interval: int(check.Frequency),
 			Unit:     "ms",
@@ -139,7 +139,7 @@ func (r *HTTPSResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Met
 		})
 		metrics = append(metrics, &schema.MetricData{
 			OrgId:    int(check.OrgId),
-			Name:     fmt.Sprintf("worldping.%s.%s.https.default", check.Slug, probe.Self.Slug),
+			Name:     fmt.Sprintf("worldping.%s.%s.%s.https.default", check.Settings["product"], check.Slug, probe.Self.Slug),
 			Metric:   "worldping.https.default",
 			Interval: int(check.Frequency),
 			Unit:     "ms",
@@ -156,7 +156,7 @@ func (r *HTTPSResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Met
 	if r.Throughput != nil {
 		metrics = append(metrics, &schema.MetricData{
 			OrgId:    int(check.OrgId),
-			Name:     fmt.Sprintf("worldping.%s.%s.https.throughput", check.Slug, probe.Self.Slug),
+			Name:     fmt.Sprintf("worldping.%s.%s.%s.https.throughput", check.Settings["product"], check.Slug, probe.Self.Slug),
 			Metric:   "worldping.https.throughput",
 			Interval: int(check.Frequency),
 			Unit:     "b/s",
@@ -173,7 +173,7 @@ func (r *HTTPSResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Met
 	if r.DataLength != nil {
 		metrics = append(metrics, &schema.MetricData{
 			OrgId:    int(check.OrgId),
-			Name:     fmt.Sprintf("worldping.%s.%s.https.dataLength", check.Slug, probe.Self.Slug),
+			Name:     fmt.Sprintf("worldping.%s.%s.%s.https.dataLength", check.Settings["product"], check.Slug, probe.Self.Slug),
 			Metric:   "worldping.https.dataLength",
 			Interval: int(check.Frequency),
 			Unit:     "B",
@@ -190,7 +190,7 @@ func (r *HTTPSResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Met
 	if r.StatusCode != nil {
 		metrics = append(metrics, &schema.MetricData{
 			OrgId:    int(check.OrgId),
-			Name:     fmt.Sprintf("worldping.%s.%s.https.statusCode", check.Slug, probe.Self.Slug),
+			Name:     fmt.Sprintf("worldping.%s.%s.%s.https.statusCode", check.Settings["product"], check.Slug, probe.Self.Slug),
 			Metric:   "worldping.https.statusCode",
 			Interval: int(check.Frequency),
 			Unit:     "",
@@ -207,7 +207,7 @@ func (r *HTTPSResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Met
 	if r.Expiry != nil {
 		metrics = append(metrics, &schema.MetricData{
 			OrgId:    int(check.OrgId),
-			Name:     fmt.Sprintf("worldping.%s.%s.https.Expiry", check.Slug, probe.Self.Slug),
+			Name:     fmt.Sprintf("worldping.%s.%s.%s.https.Expiry", check.Settings["product"], check.Slug, probe.Self.Slug),
 			Metric:   "worldping.https.expiry",
 			Interval: int(check.Frequency),
 			Unit:     "h",
@@ -233,6 +233,7 @@ func (httpsResult HTTPSResult) ErrorMsg() string {
 }
 
 type FunctionHTTPS struct {
+	Product      string        `json:"product"`
 	Host         string        `json:"hostname"`
 	Path         string        `json:"path"`
 	Port         int64         `json:"port"`
@@ -245,6 +246,15 @@ type FunctionHTTPS struct {
 }
 
 func NewFunctionHTTPS(settings map[string]interface{}) (*FunctionHTTPS, error) {
+	_product, ok := settings["product"]
+	if !ok {
+		return nil, errors.New("DNS: Empty product name")
+	}
+	product, ok := _product.(string)
+	if !ok {
+		return nil, errors.New("DNS: product must be string")
+	}
+
 	hostname, ok := settings["hostname"]
 	if !ok {
 		return nil, errors.New("HTTPS: Empty hostname")
@@ -333,7 +343,7 @@ func NewFunctionHTTPS(settings map[string]interface{}) (*FunctionHTTPS, error) {
 		}
 	}
 
-	return &FunctionHTTPS{Host: h, Path: p, Port: pt, ValidateCert: v, Method: m, Headers: hds, ExpectRegex: r, Body: b, Timeout: time.Duration(t) * time.Second}, nil
+	return &FunctionHTTPS{Product: product, Host: h, Path: p, Port: pt, ValidateCert: v, Method: m, Headers: hds, ExpectRegex: r, Body: b, Timeout: time.Duration(t) * time.Second}, nil
 }
 
 func (p *FunctionHTTPS) Run() (CheckResult, error) {

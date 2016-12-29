@@ -44,14 +44,6 @@ var (
 	PublicChecks []m.CheckWithSlug
 )
 
-func main_() {
-	healStr := "facebook.com,google.com"
-	hcheck := make([]string, 0)
-	for _, c := range strings.Split(healStr, ",") {
-		hcheck = append(hcheck, c)
-	}
-	fmt.Println(len(hcheck))
-}
 func main() {
 	flag.Parse()
 

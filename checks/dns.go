@@ -25,7 +25,7 @@ func (r *DnsResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metri
 	if r.Time != nil {
 		metrics = append(metrics, &schema.MetricData{
 			OrgId:    int(check.OrgId),
-			Name:     fmt.Sprintf("worldping.%s.%s.dns.time", check.Slug, probe.Self.Slug),
+			Name:     fmt.Sprintf("worldping.%s.%s.%s.dns.time", check.Settings["product"], check.Slug, probe.Self.Slug),
 			Metric:   "worldping.dns.time",
 			Interval: int(check.Frequency),
 			Unit:     "ms",
@@ -42,7 +42,7 @@ func (r *DnsResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metri
 	if r.Ttl != nil {
 		metrics = append(metrics, &schema.MetricData{
 			OrgId:    int(check.OrgId),
-			Name:     fmt.Sprintf("worldping.%s.%s.dns.ttl", check.Slug, probe.Self.Slug),
+			Name:     fmt.Sprintf("worldping.%s.%s.%s.dns.ttl", check.Settings["product"], check.Slug, probe.Self.Slug),
 			Metric:   "worldping.dns.ttl",
 			Interval: int(check.Frequency),
 			Unit:     "s",
@@ -59,7 +59,7 @@ func (r *DnsResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metri
 	if r.AnswersLen != nil {
 		metrics = append(metrics, &schema.MetricData{
 			OrgId:    int(check.OrgId),
-			Name:     fmt.Sprintf("worldping.%s.%s.dns.answers", check.Slug, probe.Self.Slug),
+			Name:     fmt.Sprintf("worldping.%s.%s.%s.dns.answers", check.Settings["product"], check.Slug, probe.Self.Slug),
 			Metric:   "worldping.dns.time",
 			Interval: int(check.Frequency),
 			Unit:     "",
@@ -86,6 +86,7 @@ func (dnsResult DnsResult) ErrorMsg() string {
 }
 
 type FunctionDNS struct {
+	Product     string        `json:"product"`
 	Hostname    string        `json:"hostname"`
 	Servers     []string      `json:"servers"`
 	ResolvfFile string        `json:"resolvfile"`
@@ -107,6 +108,15 @@ func getDNSServersFromFile(resolvconf string) (*dns.ClientConfig, error) {
 }
 
 func NewFunctionDNS(settings map[string]interface{}) (*FunctionDNS, error) {
+	_product, ok := settings["product"]
+	if !ok {
+		return nil, errors.New("DNS: Empty product name")
+	}
+	product, ok := _product.(string)
+	if !ok {
+		return nil, errors.New("DNS: product must be string")
+	}
+
 	hostname, ok := settings["hostname"]
 	if !ok {
 		return nil, errors.New("DNS: Empty hostname")
@@ -187,7 +197,7 @@ func NewFunctionDNS(settings map[string]interface{}) (*FunctionDNS, error) {
 		return nil, errors.New("DNS: timeout must be int")
 	}
 	t := int64(_t)
-	return &FunctionDNS{Hostname: h, Servers: servers, Protocol: protocol, Port: port, RecordType: recordtype, Timeout: time.Duration(t) * time.Second}, nil
+	return &FunctionDNS{Product: product, Hostname: h, Servers: servers, Protocol: protocol, Port: port, RecordType: recordtype, Timeout: time.Duration(t) * time.Second}, nil
 }
 
 func (p *FunctionDNS) Run() (CheckResult, error) {

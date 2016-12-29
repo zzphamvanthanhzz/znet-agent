@@ -36,7 +36,7 @@ func (r *PingResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 	if r.Loss != nil {
 		metrics = append(metrics, &schema.MetricData{
 			OrgId:    int(check.OrgId),
-			Name:     fmt.Sprintf("worldping.%s.%s.ping.loss", check.Slug, probe.Self.Slug),
+			Name:     fmt.Sprintf("worldping.%s.%s.%s.ping.loss", check.Settings["product"], check.Slug, probe.Self.Slug),
 			Metric:   "worldping.ping.loss",
 			Interval: int(check.Frequency),
 			Unit:     "percent",
@@ -53,7 +53,7 @@ func (r *PingResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 	if r.Min != nil {
 		metrics = append(metrics, &schema.MetricData{
 			OrgId:    int(check.OrgId),
-			Name:     fmt.Sprintf("worldping.%s.%s.ping.min", check.Slug, probe.Self.Slug),
+			Name:     fmt.Sprintf("worldping.%s.%s.%s.ping.min", check.Settings["product"], check.Slug, probe.Self.Slug),
 			Metric:   "worldping.ping.min",
 			Interval: int(check.Frequency),
 			Unit:     "ms",
@@ -70,7 +70,7 @@ func (r *PingResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 	if r.Max != nil {
 		metrics = append(metrics, &schema.MetricData{
 			OrgId:    int(check.OrgId),
-			Name:     fmt.Sprintf("worldping.%s.%s.ping.max", check.Slug, probe.Self.Slug),
+			Name:     fmt.Sprintf("worldping.%s.%s.%s.ping.max", check.Settings["product"], check.Slug, probe.Self.Slug),
 			Metric:   "worldping.ping.max",
 			Interval: int(check.Frequency),
 			Unit:     "ms",
@@ -87,7 +87,7 @@ func (r *PingResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 	if r.Median != nil {
 		metrics = append(metrics, &schema.MetricData{
 			OrgId:    int(check.OrgId),
-			Name:     fmt.Sprintf("worldping.%s.%s.ping.median", check.Slug, probe.Self.Slug),
+			Name:     fmt.Sprintf("worldping.%s.%s.%s.ping.median", check.Settings["product"], check.Slug, probe.Self.Slug),
 			Metric:   "worldping.ping.median",
 			Interval: int(check.Frequency),
 			Unit:     "ms",
@@ -104,7 +104,7 @@ func (r *PingResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 	if r.Mdev != nil {
 		metrics = append(metrics, &schema.MetricData{
 			OrgId:    int(check.OrgId),
-			Name:     fmt.Sprintf("worldping.%s.%s.ping.mdev", check.Slug, probe.Self.Slug),
+			Name:     fmt.Sprintf("worldping.%s.%s.%s.ping.mdev", check.Settings["product"], check.Slug, probe.Self.Slug),
 			Metric:   "worldping.ping.mdev",
 			Interval: int(check.Frequency),
 			Unit:     "ms",
@@ -121,7 +121,7 @@ func (r *PingResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 	if r.Avg != nil {
 		metrics = append(metrics, &schema.MetricData{
 			OrgId:    int(check.OrgId),
-			Name:     fmt.Sprintf("worldping.%s.%s.ping.mean", check.Slug, probe.Self.Slug),
+			Name:     fmt.Sprintf("worldping.%s.%s.%s.ping.mean", check.Settings["product"], check.Slug, probe.Self.Slug),
 			Metric:   "worldping.ping.mean",
 			Interval: int(check.Frequency),
 			Unit:     "ms",
@@ -136,7 +136,7 @@ func (r *PingResult) Metrics(t time.Time, check *m.CheckWithSlug) []*schema.Metr
 		})
 		metrics = append(metrics, &schema.MetricData{
 			OrgId:    int(check.OrgId),
-			Name:     fmt.Sprintf("worldping.%s.%s.ping.default", check.Slug, probe.Self.Slug),
+			Name:     fmt.Sprintf("worldping.%s.%s.%s.ping.default", check.Settings["product"], check.Slug, probe.Self.Slug),
 			Metric:   "worldping.ping.default",
 			Interval: int(check.Frequency),
 			Unit:     "ms",
@@ -163,11 +163,21 @@ func (pingResult PingResult) ErrorMsg() string {
 }
 
 type FunctionPing struct {
+	Product  string        `json:"product"`
 	Hostname string        `json:"hostname"`
 	Timeout  time.Duration `json:"timeout"`
 }
 
 func NewFunctionPing(settings map[string]interface{}) (*FunctionPing, error) {
+	_product, ok := settings["product"]
+	if !ok {
+		return nil, errors.New("DNS: Empty product name")
+	}
+	product, ok := _product.(string)
+	if !ok {
+		return nil, errors.New("DNS: product must be string")
+	}
+
 	hostname, ok := settings["hostname"]
 	if !ok {
 		return nil, errors.New("Ping: Empty Name")
@@ -187,7 +197,7 @@ func NewFunctionPing(settings map[string]interface{}) (*FunctionPing, error) {
 		return nil, errors.New("Ping: timeout must be int64")
 	}
 	t := int64(_t)
-	return &FunctionPing{Hostname: h, Timeout: time.Duration(t) * time.Second}, nil
+	return &FunctionPing{Product: product, Hostname: h, Timeout: time.Duration(t) * time.Second}, nil
 }
 
 func (p *FunctionPing) Run() (CheckResult, error) {
