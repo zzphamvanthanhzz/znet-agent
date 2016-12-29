@@ -1,0 +1,71 @@
+[{  
+    "id": 1,
+    "orgId":2, 
+    "endpointId":1,
+    "endpointSlug":"~facebook_com", 
+    "type":"https",
+    "state":2,
+    "settings": { 
+      "hostname": "www.facebook.com",
+      "port":  443,
+      "path": "/",
+      "method":"GET",
+      "expectRegex":"",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n"
+    },
+    "frequency":10,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z" 
+  },{  
+    "id": 3,
+    "orgId":2, 
+    "endpointId":3,
+    "endpointSlug":"~www_baomoi_com", 
+    "type":"http",
+    "state":2,
+    "settings": { 
+      "hostname": "www.baomoi.com",
+      "port":  80,
+      "path": "/",
+      "method":"GET",
+      "expectRegex":"",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n"
+    },
+    "frequency":10,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z" 
+  },{  
+    "id":4,
+    "orgId":2,
+    "endpointId":4,
+    "endpointSlug":"~tv_zing_vn",
+    "type":"ping",
+    "state":2,
+    "settings":{
+      "hostname":"tv.zing.vn"
+    },
+    "frequency":10,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+  },{  
+    "id":5,
+    "orgId":2,
+    "endpointId":5,
+    "endpointSlug":"~zalo_me",
+    "type":"dns",
+    "state":2,
+    "settings":{
+      "hostname":"zalo.me",
+      "type":"A",
+      "servers":"10.60.30.17,10.60.30.18",
+      "port":53,
+      "protocol":"udp"
+    },
+    "frequency":10,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+  }]
