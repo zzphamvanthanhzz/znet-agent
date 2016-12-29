@@ -240,11 +240,11 @@ type FunctionHTTP struct {
 func NewFunctionHTTP(settings map[string]interface{}) (*FunctionHTTP, error) {
 	_product, ok := settings["product"]
 	if !ok {
-		return nil, errors.New("DNS: Empty product name")
+		return nil, errors.New("HTTP: Empty product name")
 	}
 	product, ok := _product.(string)
 	if !ok {
-		return nil, errors.New("DNS: product must be string")
+		return nil, errors.New("HTTP: product must be string")
 	}
 
 	hostname, ok := settings["hostname"]

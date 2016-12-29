@@ -178,11 +178,11 @@ type FunctionPing struct {
 func NewFunctionPing(settings map[string]interface{}) (*FunctionPing, error) {
 	_product, ok := settings["product"]
 	if !ok {
-		return nil, errors.New("DNS: Empty product name")
+		return nil, errors.New("Ping: Empty product name")
 	}
 	product, ok := _product.(string)
 	if !ok {
-		return nil, errors.New("DNS: product must be string")
+		return nil, errors.New("Ping: product must be string")
 	}
 
 	hostname, ok := settings["hostname"]
