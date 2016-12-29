@@ -1,6 +1,6 @@
 [{  
     "id": 1,
-    "orgId":3, 
+    "orgId":1, 
     "endpointId":1,
     "endpointSlug":"wpa_zaloapp_com", 
     "type":"https",
@@ -20,9 +20,9 @@
     "updated":"2016-01-27T18:11:47Z" 
   },{  
     "id": 2,
-    "orgId":3, 
+    "orgId":1, 
     "endpointId":2,
-    "endpointSlug":"~facebook_com", 
+    "endpointSlug":"facebook_com", 
     "type":"https",
     "state":2,
     "settings": { 
@@ -40,9 +40,9 @@
     "updated":"2016-01-27T18:11:47Z" 
   },{  
     "id": 3,
-    "orgId":3, 
+    "orgId":1, 
     "endpointId":3,
-    "endpointSlug":"~www_baomoi_com", 
+    "endpointSlug":"www_baomoi_com", 
     "type":"http",
     "state":2,
     "settings": { 
@@ -60,9 +60,9 @@
     "updated":"2016-01-27T18:11:47Z" 
   },{  
     "id": 4,
-    "orgId":3, 
+    "orgId":1, 
     "endpointId":4,
-    "endpointSlug":"~zalo_me", 
+    "endpointSlug":"zalo_me", 
     "type":"https",
     "state":2,
     "settings": { 

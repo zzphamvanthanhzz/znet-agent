@@ -152,7 +152,7 @@ func (i *CheckInstance) run(t time.Time) {
 	}
 	metrics = append(metrics, &schema.MetricData{
 		OrgId:    int(i.Check.OrgId),
-		Name:     fmt.Sprintf("worldping.%s.%s.%s.ok_state", i.Check.Slug, probe.Self.Slug, i.Check.Type),
+		Name:     fmt.Sprintf("worldping.%s.%s.%s.%s.ok_state", i.Check.Settings["product"], i.Check.Slug, probe.Self.Slug, i.Check.Type),
 		Metric:   fmt.Sprintf("worldping.%s.ok_state", i.Check.Type),
 		Interval: int(i.Check.Frequency),
 		Unit:     "state",
@@ -166,7 +166,7 @@ func (i *CheckInstance) run(t time.Time) {
 		Value: okState,
 	}, &schema.MetricData{
 		OrgId:    int(i.Check.OrgId),
-		Name:     fmt.Sprintf("worldping.%s.%s.%s.error_state", i.Check.Slug, probe.Self.Slug, i.Check.Type),
+		Name:     fmt.Sprintf("worldping.%s.%s.%s.%s.error_state", i.Check.Settings["product"], i.Check.Slug, probe.Self.Slug, i.Check.Type),
 		Metric:   fmt.Sprintf("worldping.%s.error_state", i.Check.Type),
 		Interval: int(i.Check.Frequency),
 		Unit:     "state",

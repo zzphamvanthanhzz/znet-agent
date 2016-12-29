@@ -120,15 +120,14 @@ func main() {
 	}
 	version := "1.0.0"
 
-	rawUrl := gosocketio.GetUrl("api.qos.zapps.vn", 3000, false)
 	controllerUrl.Path = path.Clean(controllerUrl.Path + "/socket.io")
 	controllerUrl.RawQuery = fmt.Sprintf("EIO=3&transport=websocket&apiKey=%s&name=%s&version=%s", *apiKey, url.QueryEscape(*nodeName), version)
 	fmt.Println(controllerUrl.String())
 	client, err := gosocketio.Dial(controllerUrl.String(), transport.GetDefaultWebsocketTransport())
 	if err != nil {
-		log.Fatal(4, "Error binding socket to api server: %s with err: %s ", rawUrl, err.Error())
+		log.Fatal(4, "Error binding socket to api server: %s with err: %s ", controllerUrl.String(), err.Error())
 	}
-	log.Debug("Connect successfully to api server: %s", rawUrl)
+	log.Debug("Connect successfully to api server: %s", controllerUrl.String())
 	//tsdb for event and metrics
 	tsdbUrl, err := url.Parse(*tsdbAddr)
 	if err != nil {
