@@ -310,6 +310,8 @@ func GetCheck(checkType m.CheckType, settings map[string]interface{}) (checkFunc
 		return checks.NewFunctionHTTP(settings)
 	case m.HTTPS_CHECK:
 		return checks.NewFunctionHTTPS(settings)
+	case m.STATIC_CHECK:
+		return checks.NewFunctionSTATIC(settings)
 	default:
 		return nil, fmt.Errorf("Invalid type of check")
 	}

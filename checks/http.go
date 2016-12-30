@@ -363,7 +363,6 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 	}
 
 	url := fmt.Sprintf("http://%s:%d%s", addrs[0], p.Port, strings.Trim(p.Path, " "))
-	fmt.Println(url)
 	reqbody := bytes.NewReader([]byte(p.Body))
 	request, err := http.NewRequest(p.Method, url, reqbody)
 	if err != nil {

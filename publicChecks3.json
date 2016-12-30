@@ -145,4 +145,24 @@
     "enabled":true,
     "offset":1,
     "updated":"2016-01-27T18:11:47Z"
+  },{
+    "id": 8,
+    "orgId":1,
+    "endpointId":8,
+    "endpointSlug":"news_zing_vn",
+    "type":"static",
+    "state":2,
+    "settings": {
+      "hostname": "http://news.zing.vn",
+      "total": 5,
+      "product": "NEWS",
+      "method":"GET",
+      "expectRegex":"",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
+      "getall": true
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
   }]
