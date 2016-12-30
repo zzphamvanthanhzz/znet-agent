@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"net/url"
 	"os"
 	"os/signal"
@@ -43,6 +44,22 @@ var (
 	//
 	PublicChecks []m.CheckWithSlug
 )
+
+//Testing_ purpose
+func main_() {
+	// http://channel.zalo.me/stas?action=last-5-videos
+	res, err := http.Get("http://channel.zalo.me/stats?action=last-5-videos")
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	if res.StatusCode != 200 && res.StatusCode != 302 {
+		fmt.Println("Error wrong status code: ", res.StatusCode)
+		return
+	}
+	bytes, err := ioutil.ReadAll(res.Body)
+	fmt.Println(string(bytes))
+}
 
 func main() {
 	flag.Parse()
