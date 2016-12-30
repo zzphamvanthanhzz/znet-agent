@@ -11,6 +11,7 @@ import (
 	"io/ioutil"
 	"net"
 	"net/http"
+	u "net/url"
 	"regexp"
 	"strings"
 	"time"
@@ -255,6 +256,7 @@ type FunctionHTTPS struct {
 	Body         string        `json:"body"`
 	Timeout      time.Duration `json:"timeout"`
 	GetAll       bool          `json:"getall"`
+	RedirectTime int64         `json:"redirecttime"`
 }
 
 func NewFunctionHTTPS(settings map[string]interface{}) (*FunctionHTTPS, error) {
@@ -364,9 +366,18 @@ func NewFunctionHTTPS(settings map[string]interface{}) (*FunctionHTTPS, error) {
 		}
 	}
 
+	rd := int64(RedirectLimit)
+	redirecttime, ok := settings["redirecttime"]
+	if ok {
+		_rd, ok := redirecttime.(float64)
+		if !ok {
+			return nil, errors.New("HTTP: redirecttime must be int")
+		}
+		rd = int64(_rd)
+	}
 	return &FunctionHTTPS{Product: product, Host: h, Path: p, Port: pt, ValidateCert: v,
 		Method: m, Headers: hds, ExpectRegex: r, Body: b,
-		Timeout: time.Duration(t) * time.Second, GetAll: a}, nil
+		Timeout: time.Duration(t) * time.Second, GetAll: a, RedirectTime: rd}, nil
 }
 
 func (p *FunctionHTTPS) Run() (CheckResult, error) {
@@ -551,6 +562,169 @@ func (p *FunctionHTTPS) Run() (CheckResult, error) {
 		return result, nil
 	}
 
+	//Recursive for 302 code here
+	if statuscode == 302 {
+		redirectLink := response.Header.Get("Location")
+		fmt.Printf("HTTPS: Redirect from %s:%d%s to %s\n", p.Host, p.Port, p.Path, redirectLink)
+		if redirectLink == "" {
+			msg := fmt.Sprintf("HTTPS: Empty Location in redirect Header from ori: %s:%d%s ", p.Host, p.Port, p.Path)
+			result.Error = &msg
+			return result, nil
+		}
+
+		link, err := u.Parse(redirectLink)
+		if err != nil {
+			msg := fmt.Sprintf("HTTPS: Error parsing redirect link: %s from ori: %s:%d%s ",
+				redirectLink, p.Host, p.Port, p.Path)
+			result.Error = &msg
+			return result, nil
+		}
+		if link.Scheme == "http" {
+			settings := map[string]interface{}{
+				"product":      p.Product,
+				"hostname":     link.Host,
+				"path":         link.Path,
+				"port":         interface{}(80.0),
+				"method":       "GET",
+				"headers":      p.Headers,
+				"expectRegex":  p.ExpectRegex,
+				"body":         p.Body,
+				"timeout":      interface{}(p.Timeout.Seconds()),
+				"getall":       p.GetAll,
+				"redirecttime": interface{}(float64(p.RedirectTime - 1)),
+			}
+
+			_p, err := NewFunctionHTTP(settings)
+			if err != nil {
+				msg := fmt.Sprintf("HTTP: Error creating new redirect check from %s:%d%s to %s:%d%s at redirect time %d with err: %s",
+					p.Host, p.Port, p.Path, settings["hostname"], settings["port"], settings["path"],
+					RedirectLimit-p.RedirectTime, err.Error())
+				result.Error = &msg
+				return result, nil
+			}
+			_result, err := _p.Run()
+			if err != nil {
+				msg := fmt.Sprintf("HTTP: Error in checking when redirect from %s:%d%s to %s:%d%s at redirect time %d with err: %s",
+					p.Host, p.Port, p.Path, settings["hostname"], settings["port"], settings["path"],
+					RedirectLimit-p.RedirectTime, err.Error())
+				result.Error = &msg
+				return result, nil
+			}
+			if _result.ErrorMsg() != "" {
+				msg := fmt.Sprintf("HTTP: Error in checking when redirect from %s:%d%s to %s:%d%s at redirect time %d with err: %s",
+					p.Host, p.Port, p.Path, settings["hostname"], settings["port"], settings["path"],
+					RedirectLimit-p.RedirectTime, _result.ErrorMsg())
+				result.Error = &msg
+			}
+
+			//Add all available check result into current result
+			checkSlug := m.CheckWithSlug{}
+			_retMetrics := _result.Metrics(time.Now(), &checkSlug)
+			for _, _m := range _retMetrics {
+				if _m.Metric == "worldping.http.dns" {
+					dns = *(result.DNS) + _m.Value
+					result.DNS = &dns
+				} else if _m.Metric == "worldping.http.connect" {
+					connect = *(result.Connect) + _m.Value
+					result.Connect = &connect
+				} else if _m.Metric == "worldping.http.send" {
+					send = *(result.Send) + _m.Value
+					result.Send = &send
+				} else if _m.Metric == "worldping.http.wait" {
+					wait = *(result.Wait) + _m.Value
+					result.Wait = &wait
+				} else if _m.Metric == "worldping.http.recv" {
+					recv = *(result.Recv) + _m.Value
+					result.Recv = &recv
+				} else if _m.Metric == "worldping.http.total" {
+					total = *(result.Total) + _m.Value
+					result.Total = &total
+				} else if _m.Metric == "worldping.http.default" {
+					total = *(result.Total) + _m.Value
+					result.Total = &total
+				} else if _m.Metric == "worldping.http.throughput" {
+					throughput = *(result.Throughput) + _m.Value
+					result.Throughput = &throughput
+				} else if _m.Metric == "worldping.http.dataLength" {
+					datalength = *(result.DataLength) + _m.Value
+					result.DataLength = &datalength
+				}
+			}
+		} else if link.Scheme == "https" {
+			settings := map[string]interface{}{
+				"product":      p.Product,
+				"hostname":     link.Host,
+				"path":         link.Path,
+				"port":         interface{}(443.0),
+				"method":       "GET",
+				"headers":      p.Headers,
+				"expectRegex":  p.ExpectRegex,
+				"body":         p.Body,
+				"timeout":      interface{}(p.Timeout.Seconds()),
+				"getall":       p.GetAll,
+				"redirecttime": interface{}(float64(p.RedirectTime - 1)),
+			}
+
+			_p, err := NewFunctionHTTPS(settings)
+			if err != nil {
+				msg := fmt.Sprintf("HTTPS: Error creating new redirect check from %s:%d%s to %s:%d%s at redirect time %d with err: %s",
+					p.Host, p.Port, p.Path, settings["hostname"], settings["port"], settings["path"],
+					RedirectLimit-p.RedirectTime, err.Error())
+				result.Error = &msg
+				return result, nil
+			}
+			_result, err := _p.Run()
+			if err != nil {
+				msg := fmt.Sprintf("HTTPS: Error in checking when redirect from %s:%d%s to %s:%d%s at redirect time %d with err: %s",
+					p.Host, p.Port, p.Path, settings["hostname"], settings["port"], settings["path"],
+					RedirectLimit-p.RedirectTime, err.Error())
+				result.Error = &msg
+				return result, nil
+			}
+			if _result.ErrorMsg() != "" {
+				msg := fmt.Sprintf("HTTPS: Error in checking when redirect from %s:%d%s to %s:%d%s at redirect time %d with err: %s",
+					p.Host, p.Port, p.Path, settings["hostname"], settings["port"], settings["path"],
+					RedirectLimit-p.RedirectTime, _result.ErrorMsg())
+				result.Error = &msg
+			}
+
+			//Add all available check result into current result
+			checkSlug := m.CheckWithSlug{}
+			_retMetrics := _result.Metrics(time.Now(), &checkSlug)
+			for _, _m := range _retMetrics {
+				if _m.Metric == "worldping.https.dns" {
+					dns = *(result.DNS) + _m.Value
+					result.DNS = &dns
+				} else if _m.Metric == "worldping.https.connect" {
+					connect = *(result.Connect) + _m.Value
+					result.Connect = &connect
+				} else if _m.Metric == "worldping.https.send" {
+					send = *(result.Send) + _m.Value
+					result.Send = &send
+				} else if _m.Metric == "worldping.https.wait" {
+					wait = *(result.Wait) + _m.Value
+					result.Wait = &wait
+				} else if _m.Metric == "worldping.https.recv" {
+					recv = *(result.Recv) + _m.Value
+					result.Recv = &recv
+				} else if _m.Metric == "worldping.https.total" {
+					total = *(result.Total) + _m.Value
+					result.Total = &total
+				} else if _m.Metric == "worldping.https.default" {
+					total = *(result.Total) + _m.Value
+					result.Total = &total
+				} else if _m.Metric == "worldping.https.throughput" {
+					throughput = *(result.Throughput) + _m.Value
+					result.Throughput = &throughput
+				} else if _m.Metric == "worldping.https.dataLength" {
+					datalength = *(result.DataLength) + _m.Value
+					result.DataLength = &datalength
+				}
+			}
+		}
+		//Must return here
+		return result, nil
+	}
 	if p.ExpectRegex != "" {
 		reg, err := regexp.Compile(p.ExpectRegex)
 		if err != nil {

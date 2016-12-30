@@ -8,6 +8,7 @@ import (
 )
 
 const Limit = 1024 * 1024
+const RedirectLimit = 4
 
 type CheckResult interface {
 	Metrics(time.Time, *m.CheckWithSlug) []*schema.MetricData
