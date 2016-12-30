@@ -206,4 +206,21 @@
     "enabled":true,
     "offset":1,
     "updated":"2016-01-27T18:11:47Z"
-  }]
+  },{
+    "id": 11,
+    "orgId":1,
+    "endpointId":11,
+    "endpointSlug":"120_138_74_178_443",
+    "type":"tcp",
+    "state":2,
+    "settings": {
+      "hostname": "120.138.74.178:443",
+      "product": "ZALO",
+      "ip": "120.138.74.178",
+      "port":  443
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+    }]
