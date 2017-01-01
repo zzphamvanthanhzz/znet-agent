@@ -316,6 +316,8 @@ func GetCheck(checkType m.CheckType, settings map[string]interface{}) (checkFunc
 		return checks.NewFunctionCLINK(settings)
 	case m.TCP_CHECK:
 		return checks.NewFunctionTCP(settings)
+	case m.CDNINTEGRITY_CHECK:
+		return checks.NewFunctionCDNINTE(settings)
 	default:
 		return nil, fmt.Errorf("Invalid type of check")
 	}

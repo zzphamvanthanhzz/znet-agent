@@ -1,21 +1,18 @@
 [{
-    "id": 10,
+    "id": 12,
     "orgId":1,
-    "endpointId":10,
-    "endpointSlug":"channel_video_me_last5videos",
-    "type":"clink",
+    "endpointId":12,
+    "endpointSlug":"cdn_mp3_zing_vn_new",
+    "type":"cdnintegrity",
     "state":2,
     "settings": {
-      "hostname": "http://channel.zalo.me/stats?action=last-5-videos",
-      "total": 10,
+      "hostname": "http://cp.mp3.zing.vn/top-video?type=new",
       "product": "MEDIA-CDN",
-      "port":  80,
-      "method":"GET",
-      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
-      "getall": true
+      "numfile": 5,
+      "chunksize": 3145728
     },
-    "frequency":60,
+    "frequency":300,
     "enabled":true,
     "offset":1,
     "updated":"2016-01-27T18:11:47Z"
-  }]
+    }]

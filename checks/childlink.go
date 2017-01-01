@@ -368,12 +368,11 @@ func (p *FunctionCLINK) Run() (CheckResult, error) {
 			break
 		}
 
-		remain--
 		if _link.Scheme == "http" {
 			settings := map[string]interface{}{}
 			settings["product"] = p.Product
 			settings["method"] = "GET"
-			settings["getall"] = true
+			settings["getall"] = false
 			settings["hostname"] = _link.Host
 			settings["port"] = interface{}(80.0)
 			settings["path"] = _link.Path
@@ -426,11 +425,13 @@ func (p *FunctionCLINK) Run() (CheckResult, error) {
 					result.DataLength = &dataLen
 				}
 			}
+			//Only calculate if cussess
+			remain--
 		} else if _link.Scheme == "https" {
 			settings := map[string]interface{}{}
 			settings["product"] = p.Product
 			settings["method"] = "GET"
-			settings["getall"] = true
+			settings["getall"] = false
 			settings["hostname"] = _link.Host
 			settings["port"] = interface{}(443.0)
 			settings["path"] = _link.Path
@@ -483,6 +484,8 @@ func (p *FunctionCLINK) Run() (CheckResult, error) {
 					result.DataLength = &dataLen
 				}
 			}
+			//Only calculate if cussess
+			remain--
 		}
 	}
 

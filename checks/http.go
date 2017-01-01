@@ -389,7 +389,7 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 		return result, nil
 	}
 	if p.Headers != "" {
-		b := bufio.NewReader(strings.NewReader("GET / HTTP/1.1\r\n\r\n" + p.Headers + "\r\n\r\n"))
+		b := bufio.NewReader(strings.NewReader("GET / HTTP/1.1\r\n" + p.Headers + "\r\n\r\n"))
 		_req, err := http.ReadRequest(b)
 		if err != nil {
 			msg := err.Error()
@@ -474,7 +474,7 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 
 	//Read body
 	step = time.Now()
-	buf := make([]byte, 1024)
+	buf := make([]byte, 1000)
 	var body bytes.Buffer
 	datasize := 0
 	for {
@@ -482,6 +482,7 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 		body.Write(buf[:count])
 		if err != nil {
 			if err == io.EOF {
+				datasize += count
 				break
 			} else {
 				msg := fmt.Sprintf("HTTP: Error reading body from conn: %s with err: %s", sockaddr, err.Error())
@@ -504,12 +505,7 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 		return result, nil
 	}
 
-	var headerbyteBuffer bytes.Buffer
 	datalength := float64(datasize)
-	err = response.Header.Write(&headerbyteBuffer)
-	if err == nil {
-		datalength += float64(headerbyteBuffer.Len())
-	}
 	result.DataLength = &datalength
 
 	throughput := float64(datasize) * 1000 * 8 / float64(recv) //bit/s
@@ -521,7 +517,7 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 		msg := fmt.Sprintf("HTTP: Invalid status code %f from conn: %s", statuscode, sockaddr)
 		result.Error = &msg
 		return result, nil
-	} else if statuscode != 200 && statuscode != 302 {
+	} else if statuscode != 200 && statuscode != 302 && statuscode != 206 {
 		msg := fmt.Sprintf("HTTP: Error code %f from conn: %s", statuscode, sockaddr)
 		result.Error = &msg
 		return result, nil
@@ -607,11 +603,11 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 				} else if _m.Metric == "worldping.http.default" {
 					total = *(result.Total) + _m.Value
 					result.Total = &total
-				} else if _m.Metric == "worldping.http.throughput" {
-					throughput = *(result.Throughput) + _m.Value
+				} else if _m.Metric == "worldping.http.throughput" { //If redirect, throughput and datalength is calculate for the last 200 code
+					throughput = _m.Value
 					result.Throughput = &throughput
 				} else if _m.Metric == "worldping.http.dataLength" {
-					datalength = *(result.DataLength) + _m.Value
+					datalength = _m.Value
 					result.DataLength = &datalength
 				}
 			}
@@ -678,11 +674,11 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 				} else if _m.Metric == "worldping.https.default" {
 					total = *(result.Total) + _m.Value
 					result.Total = &total
-				} else if _m.Metric == "worldping.https.throughput" {
-					throughput = *(result.Throughput) + _m.Value
+				} else if _m.Metric == "worldping.https.throughput" { //If redirect, throughput and datalength is calculate for the last 200 code
+					throughput = _m.Value
 					result.Throughput = &throughput
 				} else if _m.Metric == "worldping.https.dataLength" {
-					datalength = *(result.DataLength) + _m.Value
+					datalength = _m.Value
 					result.DataLength = &datalength
 				}
 			}
