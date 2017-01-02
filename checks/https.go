@@ -381,6 +381,10 @@ func NewFunctionHTTPS(settings map[string]interface{}) (*FunctionHTTPS, error) {
 }
 
 func (p *FunctionHTTPS) Run() (CheckResult, error) {
+	if p.RedirectTime == 0 {
+		msg := fmt.Sprintf("HTTP: redirect for : %s/%s over limit of %d", p.Host, p.Path, RedirectLimit)
+		return nil, errors.New(msg)
+	}
 	start := time.Now()
 	deadline := time.Now().Add(p.Timeout)
 	result := &HTTPSResult{}
@@ -402,7 +406,7 @@ func (p *FunctionHTTPS) Run() (CheckResult, error) {
 	}
 
 	url := fmt.Sprintf("http://%s:%d%s", addrs[0], p.Port, strings.Trim(p.Path, " "))
-	reqbody := strings.NewReader(p.Body)
+	reqbody := bytes.NewReader([]byte(p.Body))
 	request, err := http.NewRequest(p.Method, url, reqbody)
 	if err != nil {
 		msg := err.Error()
@@ -422,9 +426,9 @@ func (p *FunctionHTTPS) Run() (CheckResult, error) {
 			request.Header.Set(key, _headers.Get(key))
 		}
 	}
-	if request.Header.Get("Accept-Encoding") == "" {
-		request.Header.Set("Accept-Encoding", "gzip")
-	}
+	// if request.Header.Get("Accept-Encoding") == "" {
+	// 	request.Header.Set("Accept-Encoding", "gzip")
+	// }
 	if request.Header.Get("User-Agent") == "" {
 		request.Header.Set("User-Agent", "Mozilla/5.0")
 	}
@@ -506,7 +510,7 @@ func (p *FunctionHTTPS) Run() (CheckResult, error) {
 
 	//Read body
 	step = time.Now()
-	buf := make([]byte, 1000)
+	buf := make([]byte, 1024)
 	var body bytes.Buffer
 	datasize := 0
 	for {
@@ -515,6 +519,7 @@ func (p *FunctionHTTPS) Run() (CheckResult, error) {
 		if err != nil {
 			if err == io.EOF {
 				datasize += count
+				fmt.Printf("HTTPS: %s EOF with size: %d \n content: %s\n", p.Host, datasize, body.String())
 				break
 			} else {
 				msg := fmt.Sprintf("HTTPS: Error reading body from conn: %s with err: %s", sockaddr, err.Error())

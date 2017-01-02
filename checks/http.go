@@ -402,9 +402,9 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 			request.Header.Set(key, _headers.Get(key))
 		}
 	}
-	if request.Header.Get("Accept-Encoding") == "" {
-		request.Header.Set("Accept-Encoding", "gzip")
-	}
+	// if request.Header.Get("Accept-Encoding") == "" {
+	// 	request.Header.Set("Accept-Encoding", "gzip")
+	// }
 	if request.Header.Get("User-Agent") == "" {
 		request.Header.Set("User-Agent", "Mozilla/5.0")
 	}
@@ -427,7 +427,7 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 		result.Error = &msg
 		return result, nil
 	}
-	connect := float64(time.Since(step).Seconds() * 1000)
+	connect := time.Since(step).Seconds() * 1000
 	result.Connect = &connect
 
 	_connect := connect - float64(p.Timeout.Seconds()*1000)
@@ -447,7 +447,7 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 		result.Error = &msg
 		return result, nil
 	}
-	send := float64(time.Since(step).Seconds() * 1000)
+	send := time.Since(step).Seconds() * 1000
 	result.Send = &send
 	if time.Now().Sub(deadline).Seconds() > 0 {
 		msg := fmt.Sprintf("HTTP: Timeout after writing to connection: %s", sockaddr)
@@ -465,7 +465,7 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 		result.Error = &msg
 		return result, nil
 	}
-	wait := float64(time.Since(step).Seconds() * 1000)
+	wait := time.Since(step).Seconds() * 1000
 	result.Wait = &wait
 	if time.Now().Sub(deadline).Seconds() > 0.0 {
 		msg := fmt.Sprintf("HTTP: Timeout after reading headers from conn: %s", sockaddr)
@@ -474,7 +474,7 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 
 	//Read body
 	step = time.Now()
-	buf := make([]byte, 1000)
+	buf := make([]byte, 1024)
 	var body bytes.Buffer
 	datasize := 0
 	for {
@@ -483,6 +483,7 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 		if err != nil {
 			if err == io.EOF {
 				datasize += count
+				fmt.Println("HTTP: %s EOF with size: %d", p.Host, datasize)
 				break
 			} else {
 				msg := fmt.Sprintf("HTTP: Error reading body from conn: %s with err: %s", sockaddr, err.Error())
@@ -495,8 +496,8 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 			break
 		}
 	}
-	recv := float64(time.Since(step).Seconds() * 1000)
-	total := float64(time.Since(start).Seconds() * 1000)
+	recv := time.Since(step).Seconds() * 1000
+	total := time.Since(start).Seconds() * 1000
 	result.Recv = &recv
 	result.Total = &total
 	if time.Now().Sub(deadline).Seconds() > 0.0 {
