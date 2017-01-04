@@ -654,4 +654,44 @@
     "enabled":true,
     "offset":1,
     "updated":"2016-01-27T18:11:47Z"
+  },{
+    "id": 32,
+    "orgId":1,
+    "endpointId":32,
+    "endpointSlug":"data2_baomoi_com__api_v1_0_publisher",
+    "type":"http",
+    "state":2,
+    "settings": {
+      "hostname": "data2.baomoi.com",
+      "product": "NEWS",
+      "port":  80,
+      "path": "/api/v1.0/publishers?start=0&size=10&apikey=baomoi_v1.0&ignoresig=true&sig=264c04eca77e3bed2ef8588aa2331e6c&ctime=1466809106029",
+      "method":"GET",
+      "expectRegex":"",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
+      "getall": true
+    },
+    "frequency":300,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+  },{
+    "id": 33,
+    "orgId":1,
+    "endpointId":33,
+    "endpointSlug":"apiv2_mp3_zing_vn",
+    "type":"clink",
+    "state":2,
+    "settings": {
+      "hostname": "http://apiv2.mp3.zing.vn/qos?data={id:1,timestamp:2073925654207}&publicKey=3bf21d8608473090625e102f5bcdb026&sig=cz5NgFFnnzMK3Y3OG0ig/w==",
+      "total": 30,
+      "product": "MEDIA",
+      "port":  80,
+      "method":"GET",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n"
+    },
+    "frequency":300,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
   }] 

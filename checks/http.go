@@ -493,6 +493,7 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 		}
 		datasize += count
 		if !p.GetAll && datasize >= Limit {
+			fmt.Printf("HTTP: %s%s Reach limit %f with size %f\n", p.Host, p.Path, float64(Limit), float64(datasize))
 			break
 		}
 	}
@@ -515,15 +516,15 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 	statuscode := float64(response.StatusCode)
 	result.StatusCode = &statuscode
 	if statuscode < 100 || statuscode >= 600 {
-		msg := fmt.Sprintf("HTTP: Invalid status code %f from conn: %s", statuscode, sockaddr)
+		msg := fmt.Sprintf("HTTP: Invalid status code %d from conn: %s", int64(statuscode), sockaddr)
 		result.Error = &msg
 		return result, nil
 	} else if statuscode != 200 && statuscode != 302 && statuscode != 206 {
-		msg := fmt.Sprintf("HTTP: Error code %f from conn: %s", statuscode, sockaddr)
+		msg := fmt.Sprintf("HTTP: Error code %d from conn: %s", int64(statuscode), sockaddr)
 		result.Error = &msg
 		return result, nil
 	}
-
+	fmt.Printf("HTTP: %s%s with size: %f\n", p.Host, p.Path, datalength)
 	//Recursive for 302 code here
 	if statuscode == 302 {
 		redirectLink := response.Header.Get("Location")
@@ -559,7 +560,7 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 			_p, err := NewFunctionHTTP(settings)
 			if err != nil {
 				msg := fmt.Sprintf("HTTP: Error creating new redirect check from %s:%d%s to %s:%d%s at redirect time %d with err: %s",
-					p.Host, p.Port, p.Path, settings["hostname"], settings["port"], settings["path"],
+					p.Host, p.Port, p.Path, settings["hostname"], int64(settings["port"].(float64)), settings["path"],
 					RedirectLimit-p.RedirectTime, err.Error())
 				result.Error = &msg
 				return result, nil
@@ -567,14 +568,14 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 			_result, err := _p.Run()
 			if err != nil {
 				msg := fmt.Sprintf("HTTP: Error in checking when redirect from %s:%d%s to %s:%d%s at redirect time %d with err: %s",
-					p.Host, p.Port, p.Path, settings["hostname"], settings["port"], settings["path"],
+					p.Host, p.Port, p.Path, settings["hostname"], int64(settings["port"].(float64)), settings["path"],
 					RedirectLimit-p.RedirectTime, err.Error())
 				result.Error = &msg
 				return result, nil
 			}
 			if _result.ErrorMsg() != "" {
 				msg := fmt.Sprintf("HTTP: Error in checking when redirect from %s:%d%s to %s:%d%s at redirect time %d with err: %s",
-					p.Host, p.Port, p.Path, settings["hostname"], settings["port"], settings["path"],
+					p.Host, p.Port, p.Path, settings["hostname"], int64(settings["port"].(float64)), settings["path"],
 					RedirectLimit-p.RedirectTime, _result.ErrorMsg())
 				result.Error = &msg
 			}

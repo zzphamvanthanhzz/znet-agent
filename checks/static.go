@@ -363,7 +363,7 @@ func (p *FunctionSTATIC) Run() (CheckResult, error) {
 			settings["getall"] = true
 			settings["hostname"] = _link.Host
 			settings["port"] = interface{}(80.0)
-			settings["path"] = _link.Path
+			settings["path"] = fmt.Sprintf("%s?%s", _link.Path, _link.RawQuery)
 			check, err := NewFunctionHTTP(settings)
 			if err != nil {
 				msg := fmt.Sprintf("STATIC: Error creating HTTP for static link: %s with err: %s", link, err.Error())
@@ -421,7 +421,7 @@ func (p *FunctionSTATIC) Run() (CheckResult, error) {
 			settings["getall"] = true
 			settings["hostname"] = _link.Host
 			settings["port"] = interface{}(443.0)
-			settings["path"] = _link.Path
+			settings["path"] = fmt.Sprintf("%s?%s", _link.Path, _link.RawQuery)
 			check, err := NewFunctionHTTPS(settings)
 			if err != nil {
 				msg := fmt.Sprintf("STATIC: Error creating HTTP for static link: %s with err: %s", link, err.Error())
