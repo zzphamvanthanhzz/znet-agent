@@ -276,7 +276,8 @@ func (s *Scheduler) Update(check *m.CheckWithSlug) {
 	if existingCheck, ok := s.Check[check.Id]; !ok {
 		c, err := NewCheckInstance(check, s.Healthy)
 		if err != nil {
-			log.Error(3, "Error create new check %d of type: %d", check.Id, check.Type)
+			log.Error(3, "Error create new check %d of type: %s with err: %s",
+				check.Id, check.Type, err.Error())
 		} else {
 			s.Check[check.Id] = c
 		}

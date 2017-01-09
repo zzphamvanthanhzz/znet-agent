@@ -300,10 +300,11 @@ func NewFunctionSTATIC(settings map[string]interface{}) (*FunctionSTATIC, error)
 	t := int64(5)
 	timeout, ok := settings["timeout"]
 	if ok {
-		t, ok = timeout.(int64)
+		_t, ok := timeout.(float64)
 		if !ok {
-			return nil, errors.New("STATIC: timeout must be int")
+			return nil, errors.New("HTTP: timeout must be int")
 		}
+		t = int64(_t)
 	}
 
 	return &FunctionSTATIC{Product: product, Total: total, Url: h, Method: m, Headers: hds,

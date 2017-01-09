@@ -351,10 +351,11 @@ func NewFunctionHTTPS(settings map[string]interface{}) (*FunctionHTTPS, error) {
 	t := int64(5)
 	timeout, ok := settings["timeout"]
 	if ok {
-		t, ok = timeout.(int64)
+		_t, ok := timeout.(float64)
 		if !ok {
-			return nil, errors.New("HTTPS: timeout must be int")
+			return nil, errors.New("HTTP: timeout must be int")
 		}
+		t = int64(_t)
 	}
 
 	a := false
