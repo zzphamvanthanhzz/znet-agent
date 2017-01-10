@@ -5,7 +5,6 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
-	"net/http"
 	"net/url"
 	"os"
 	"os/signal"
@@ -46,19 +45,39 @@ var (
 )
 
 //Testing_ purpose
+var tmp = "{\"123\":[{\"url\":\"xxx\", \"size\":1234},{\"url\":\"xxx\", \"size\":1234}],\"124\":[{\"url\":\"xxx\", \"size\":1234},{\"url\":\"xxx\", \"size\":1234}]}"
+
 func main_() {
-	// http://channel.zalo.me/stas?action=last-5-videos
-	res, err := http.Get("http://channel.zalo.me/stats?action=last-5-videos")
+	// u := "http://apiv2.mp3.zing.vn/searchArtist?data={\"timestamp\": 1483445742455, \"keyword\":\"lạc trôi\"}&publicKey=3bf21d8608473090625e102f5bcdb026&sig=NJ2A7B%2bBGYCcZ%2bZrwTXrKg=="
+	// _url, err := url.Parse(u)
+	// if err != nil {
+	// 	panic("Cannot parse")
+	// }
+	// fmt.Printf("%s\n%s\n%s\n%s\nStr is: %s\n", _url.String(), _url.Host, _url.Path, _url.RawQuery, _url.String())
+	// res, err := http.Get(_url.String())
+	// if err != nil {
+	// 	fmt.Println("err get", err.Error())
+	// 	return
+	// }
+	// fmt.Println(res.StatusCode)
+	// body, err := ioutil.ReadAll(res.Body)
+	// if err != nil {
+	// 	fmt.Println("err read", err.Error())
+	// 	return
+	// }
+	// fmt.Println(string(body))
+
+	u := "http://apiv2.mp3.zing.vn/searchArtist?data={\"timestamp\": 1483445742455, \"keyword\":\"lạc trôi\"}&publicKey=3bf21d8608473090625e102f5bcdb026&sig=NJ2A7B%2bBGYCcZ%2bZrwTXrKg=="
+	_url, err := url.Parse(u)
 	if err != nil {
-		fmt.Println(err.Error())
-		return
+		panic("Cannot parse")
 	}
-	if res.StatusCode != 200 && res.StatusCode != 302 {
-		fmt.Println("Error wrong status code: ", res.StatusCode)
-		return
-	}
-	bytes, err := ioutil.ReadAll(res.Body)
-	fmt.Println(string(bytes))
+	params := url.Values{}
+	params.Add("data", "{\"timestamp\": 1483445742455, \"keyword\":\"lạc trôi\"}")
+	params.Add("publicKey", "3bf21d8608473090625e102f5bcdb026&sig=NJ2A7B%2bBGYCcZ%2bZrwTXrKg==")
+	_url.RawQuery = params.Encode()
+	fmt.Println(_url.String())
+
 }
 
 func main() {
@@ -182,6 +201,7 @@ func bindHandlers(client *gosocketio.Client, controllerUrl *url.URL,
 	})
 
 	client.On("refresh", func(c *gosocketio.Channel, checks []*m.CheckWithSlug) {
+		log.Debug(fmt.Sprintf("On refresh: %#v", checks))
 		for _, c := range PublicChecks {
 			_c := c
 			checks = append(checks, &_c)
@@ -190,14 +210,17 @@ func bindHandlers(client *gosocketio.Client, controllerUrl *url.URL,
 	})
 
 	client.On("created", func(c *gosocketio.Channel, check m.CheckWithSlug) {
+		log.Debug(fmt.Sprintf("On created: %#v", check))
 		jobScheduler.Create(&check)
 	})
 
 	client.On("updated", func(c *gosocketio.Channel, check m.CheckWithSlug) {
+		log.Debug(fmt.Sprintf("On updated: %#v", check))
 		jobScheduler.Update(&check)
 	})
 
 	client.On("removed", func(c *gosocketio.Channel, check m.CheckWithSlug) {
+		log.Debug(fmt.Sprintf("On removed: %#v", check))
 		jobScheduler.Remove(&check)
 	})
 

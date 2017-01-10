@@ -1,0 +1,20 @@
+[{
+    "id": 10,
+    "orgId":1,
+    "endpointId":10,
+    "endpointSlug":"channel_video_me_last5videos",
+    "type":"clink",
+    "state":2,
+    "settings": {
+      "hostname": "http://channel.zalo.me/stats?action=last-5-videos",
+      "total": 10,
+      "product": "MEDIA-CDN",
+      "port":  80,
+      "method":"GET",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+  }]

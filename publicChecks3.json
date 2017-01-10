@@ -11,8 +11,8 @@
       "port":  443,
       "path": "/",
       "method":"GET",
-      "expectRegex":"",
-      "headers":"User-Agent: Mozilla/5.0\n",
+      "expectregex":"",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
       "getall": true
     },
     "frequency":60,
@@ -32,7 +32,7 @@
       "port":  80,
       "path": "/",
       "method":"GET",
-      "expectRegex":"",
+      "expectregex":"",
       "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
       "getall": true
     },
@@ -53,7 +53,7 @@
       "port":  80,
       "path": "/",
       "method":"GET",
-      "expectRegex":"",
+      "expectregex":"",
       "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
       "getall": true
     },

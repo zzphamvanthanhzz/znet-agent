@@ -675,23 +675,4 @@
     "enabled":true,
     "offset":1,
     "updated":"2016-01-27T18:11:47Z"
-  },{
-    "id": 33,
-    "orgId":1,
-    "endpointId":33,
-    "endpointSlug":"apiv2_mp3_zing_vn",
-    "type":"clink",
-    "state":2,
-    "settings": {
-      "hostname": "http://apiv2.mp3.zing.vn/qos?data={id:1,timestamp:2073925654207}&publicKey=3bf21d8608473090625e102f5bcdb026&sig=cz5NgFFnnzMK3Y3OG0ig/w==",
-      "total": 30,
-      "product": "MEDIA",
-      "port":  80,
-      "method":"GET",
-      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n"
-    },
-    "frequency":300,
-    "enabled":true,
-    "offset":1,
-    "updated":"2016-01-27T18:11:47Z"
   }] 

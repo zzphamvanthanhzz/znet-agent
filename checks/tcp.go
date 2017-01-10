@@ -290,7 +290,7 @@ func (p *FunctionTCP) Run() (CheckResult, error) {
 		}
 	}
 	if pingRet.ErrorMsg() != "" {
-		msg := fmt.Sprintf("TCP: Error with ping to sock: %s with err: %s", sockaddr, err.Error())
+		msg := fmt.Sprintf("TCP: Error with ping to sock: %s with err: %s", sockaddr, pingRet.ErrorMsg())
 		result.Error = &msg
 	}
 	step := time.Now()

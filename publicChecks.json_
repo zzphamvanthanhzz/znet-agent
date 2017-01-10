@@ -1,0 +1,387 @@
+[{
+    "id": 1,
+    "orgId":1,
+    "endpointId":1,
+    "endpointSlug":"wpa_zaloapp_com",
+    "type":"https",
+    "state":2,
+    "settings": {
+      "hostname": "wpa.zaloapp.com",
+      "product": "ZALO",
+      "port":  443,
+      "path": "/",
+      "method":"GET",
+      "expectRegex":"",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
+      "validatecert": false,
+      "getall": true
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+  },{
+    "id": 2,
+    "orgId":1,
+    "endpointId":2,
+    "endpointSlug":"facebook_com",
+    "type":"https",
+    "state":2,
+    "settings": {
+      "hostname": "www.facebook.com",
+      "product": "TEST",
+      "port":  443,
+      "path": "/",
+      "method":"GET",
+      "expectRegex":"",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
+      "getall": true
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+  },{
+    "id": 3,
+    "orgId":1,
+    "endpointId":3,
+    "endpointSlug":"www_baomoi_com",
+    "type":"http",
+    "state":2,
+    "settings": {
+      "hostname": "www.baomoi.com",
+      "product": "NEWS",
+      "port":  80,
+      "path": "/",
+      "method":"GET",
+      "expectRegex":"",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
+      "getall": true
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+  },{
+    "id": 14,
+    "orgId":1,
+    "endpointId":14,
+    "endpointSlug":"www_baomoi_com",
+    "type":"static",
+    "state":2,
+    "settings": {
+      "hostname": "http://www.baomoi.com",
+      "total": 5,
+      "product": "NEWS",
+      "method":"GET",
+      "expectRegex":"",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
+      "getall": true
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+  },{
+    "id": 13,
+    "orgId":1,
+    "endpointId":13,
+    "endpointSlug":"m_baomoi_com",
+    "type":"http",
+    "state":2,
+    "settings": {
+      "hostname": "m.baomoi.com",
+      "product": "NEWS",
+      "port":  80,
+      "path": "/",
+      "method":"GET",
+      "expectRegex":"",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
+      "getall": true
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+  },{
+    "id": 15,
+    "orgId":1,
+    "endpointId":15,
+    "endpointSlug":"m_baomoi_com",
+    "type":"static",
+    "state":2,
+    "settings": {
+      "hostname": "http://m.baomoi.com",
+      "total": 5,
+      "product": "NEWS",
+      "method":"GET",
+      "expectRegex":"",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
+      "getall": true
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+  },{
+    "id": 4,
+    "orgId":1,
+    "endpointId":4,
+    "endpointSlug":"zalo_me",
+    "type":"https",
+    "state":2,
+    "settings": {
+      "hostname": "zalo.me",
+      "product": "ZALO",
+      "port":  443,
+      "path": "/",
+      "method":"GET",
+      "expectRegex":"",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
+      "validatecert": false,
+      "getall": true
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+  },{
+    "id": 5,
+    "orgId":1,
+    "endpointId":5,
+    "endpointSlug":"mp3_zing_vn",
+    "type":"http",
+    "state":2,
+    "settings": {
+      "hostname": "mp3.zing.vn",
+      "product": "MEDIA",
+      "port":  80,
+      "path": "/",
+      "method":"GET",
+      "expectRegex":"",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
+      "getall": true
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+  },{
+    "id": 16,
+    "orgId":1,
+    "endpointId":16,
+    "endpointSlug":"mp3_zing_vn",
+    "type":"static",
+    "state":2,
+    "settings": {
+      "hostname": "http://mp3.zing.vn",
+      "total": 5,
+      "product": "MEDIA",
+      "method":"GET",
+      "expectRegex":"",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
+      "getall": true
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+  },{
+    "id": 17,
+    "orgId":1,
+    "endpointId":17,
+    "endpointSlug":"tv_zing_vn",
+    "type":"http",
+    "state":2,
+    "settings": {
+      "hostname": "tv.zing.vn",
+      "product": "MEDIA",
+      "port":  80,
+      "path": "/",
+      "method":"GET",
+      "expectRegex":"",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
+      "getall": true
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+  },{
+    "id": 18,
+    "orgId":1,
+    "endpointId":18,
+    "endpointSlug":"tv_zing_vn",
+    "type":"static",
+    "state":2,
+    "settings": {
+      "hostname": "http://tv.zing.vn",
+      "total": 5,
+      "product": "MEDIA",
+      "method":"GET",
+      "expectRegex":"",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
+      "getall": true
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+  },{
+    "id": 6,
+    "orgId":1,
+    "endpointId":6,
+    "endpointSlug":"video_channel_zalo_me",
+    "type":"http",
+    "state":2,
+    "settings": {
+      "hostname": "video.channel.zalo.me",
+      "product": "MEDIA",
+      "port":  80,
+      "path": "/a0c29a18a65d4f03164c?&.mp4",
+      "method":"GET",
+      "expectRegex":"",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
+      "getall": true
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+  },{
+    "id": 7,
+    "orgId":1,
+    "endpointId":7,
+    "endpointSlug":"videochannel_cache12_vcdn_vn",
+    "type":"http",
+    "state":2,
+    "settings": {
+      "hostname": "videochannel.cache12.vcdn.vn",
+      "product": "MEDIA-CDN",
+      "port":  80,
+      "path": "/a0c29a18a65d4f03164c?&.mp4",
+      "method":"GET",
+      "expectRegex":"",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
+      "getall": true
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+  },{
+    "id": 8,
+    "orgId":1,
+    "endpointId":8,
+    "endpointSlug":"news_zing_vn",
+    "type":"static",
+    "state":2,
+    "settings": {
+      "hostname": "http://news.zing.vn",
+      "total": 5,
+      "product": "NEWS",
+      "method":"GET",
+      "expectRegex":"",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
+      "getall": true
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+  },{
+    "id": 9,
+    "orgId":1,
+    "endpointId":9,
+    "endpointSlug":"news_zing_vn",
+    "type":"http",
+    "state":2,
+    "settings": {
+      "hostname": "news.zing.vn",
+      "product": "NEWS",
+      "port":  80,
+      "path": "/",
+      "method":"GET",
+      "expectRegex":"",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
+      "getall": true
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+  },{
+    "id": 10,
+    "orgId":1,
+    "endpointId":10,
+    "endpointSlug":"channel_video_me_last5videos",
+    "type":"clink",
+    "state":2,
+    "settings": {
+      "hostname": "http://channel.zalo.me/stats?action=last-5-videos",
+      "total": 10,
+      "product": "MEDIA-CDN",
+      "port":  80,
+      "method":"GET",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
+      "getall": true
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+  },{
+    "id": 18,
+    "orgId":1,
+    "endpointId":18,
+    "endpointSlug":"channel_video_me_last5videos",
+    "type":"clink",
+    "state":2,
+    "settings": {
+      "hostname": "http://channel.zalo.me/stats?action=last-5-videos",
+      "total": 10,
+      "product": "MEDIA-CDN",
+      "port":  80,
+      "method":"GET",
+      "headers":"Accept-Encoding: gzip\nUser-Agent: Mozilla/5.0\n",
+      "getall": true
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+  },{
+    "id": 11,
+    "orgId":1,
+    "endpointId":11,
+    "endpointSlug":"120_138_74_178_443",
+    "type":"tcp",
+    "state":2,
+    "settings": {
+      "hostname": "120.138.74.178:443",
+      "product": "ZALO",
+      "ip": "120.138.74.178",
+      "port":  443
+    },
+    "frequency":60,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+    },{
+    "id": 12,
+    "orgId":1,
+    "endpointId":12,
+    "endpointSlug":"cdn_mp3_zing_vn_new",
+    "type":"cdnintegrity",
+    "state":2,
+    "settings": {
+      "hostname": "http://cp.mp3.zing.vn/top-video?type=new",
+      "product": "MEDIA-CDN",
+      "numfile": 5,
+      "chunksize": 3145728
+    },
+    "frequency":300,
+    "enabled":true,
+    "offset":1,
+    "updated":"2016-01-27T18:11:47Z"
+    }]
