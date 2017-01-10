@@ -30,9 +30,10 @@ type CheckInstance struct {
 }
 
 func NewCheckInstance(c *m.CheckWithSlug, healthy bool) (*CheckInstance, error) {
-
+	log.Debug(fmt.Sprintf("NewCheckInstance with: %#v and healthy:  %#v", c, healthy))
 	checkfunc, err := GetCheck(c.Type, c.Settings)
 	if err != nil {
+		log.Error(3, "Error creating new check Instance with err %s", err.Error())
 		return nil, err
 	}
 	checkInstance := &CheckInstance{
@@ -51,13 +52,16 @@ func (i *CheckInstance) Update(c *m.CheckWithSlug, healthy bool) error {
 	if err != nil {
 		return err
 	}
+
 	i.Lock()
+	i.Ticker.Stop()
 	i.Check = c
 	i.Exec = checkfunc
 	i.Unlock()
 	if healthy {
-		i.Run()
+		go i.Run()
 	}
+	log.Debug("Complete CheckInstance Update %#v", c)
 	return nil
 }
 
@@ -74,6 +78,7 @@ func (i *CheckInstance) Run() {
 	i.Ticker = time.NewTicker(time.Duration(i.Check.Frequency) * time.Second)
 	i.Unlock()
 	for t := range i.Ticker.C {
+		log.Debug("Run check %s for hostname: %s", i.Check.Type, i.Check.Settings["hostname"])
 		i.run(t)
 	}
 }
@@ -216,6 +221,7 @@ func (s *Scheduler) Close() {
 		c.Stop()
 	}
 	s.Check = make(map[int64]*CheckInstance, 0)
+	s.Unlock()
 }
 
 func (s *Scheduler) Refresh(checks []*m.CheckWithSlug) {
@@ -232,6 +238,8 @@ func (s *Scheduler) Refresh(checks []*m.CheckWithSlug) {
 			err := oldCheck.Update(check, s.Healthy)
 			if err != nil {
 				log.Error(3, "Error updating check id: %d of type: %d with error %s", check.Id, check.Type, err.Error())
+				oldCheck.Stop()
+				delete(s.Check, check.Id)
 			}
 			seencheck[check.Id] = true
 		} else {
@@ -254,12 +262,14 @@ func (s *Scheduler) Refresh(checks []*m.CheckWithSlug) {
 			delete(s.Check, id)
 		}
 	}
+	log.Debug("Finish refreshing: ")
 	s.Unlock()
 }
 
 func (s *Scheduler) Create(check *m.CheckWithSlug) {
 	s.Lock()
 	if existingCheck, ok := s.Check[check.Id]; ok {
+		log.Debug("Create 2: %#v", check)
 		existingCheck.Stop()
 		delete(s.Check, check.Id)
 	}
