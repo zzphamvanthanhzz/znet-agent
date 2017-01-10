@@ -302,10 +302,11 @@ func NewFunctionCLINK(settings map[string]interface{}) (*FunctionCLINK, error) {
 	t := int64(5)
 	timeout, ok := settings["timeout"]
 	if ok {
-		t, ok = timeout.(int64)
+		_t, ok := timeout.(float64)
 		if !ok {
-			return nil, errors.New("CLINK: timeout must be int")
+			return nil, errors.New("HTTP: timeout must be int")
 		}
+		t = int64(_t)
 	}
 
 	return &FunctionCLINK{Product: product, Total: total, Url: h, Method: m, Headers: hds,

@@ -229,10 +229,11 @@ func NewFunctionTCP(settings map[string]interface{}) (*FunctionTCP, error) {
 	t := int64(5)
 	timeout, ok := settings["timeout"]
 	if ok {
-		t, ok = timeout.(int64)
+		_t, ok := timeout.(float64)
 		if !ok {
-			return nil, errors.New("TCP: timeout must be int")
+			return nil, errors.New("HTTP: timeout must be int")
 		}
+		t = int64(_t)
 	}
 
 	return &FunctionTCP{Product: product, Host: h, Ip: p, Port: pt, Timeout: time.Duration(t) * time.Second}, nil
