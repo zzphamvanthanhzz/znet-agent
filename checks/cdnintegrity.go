@@ -428,7 +428,7 @@ func (p *FunctionCDNINTE) Run() (CheckResult, error) {
 					settings["path"] = u.Path
 					settings["headers"] = fmt.Sprintf("Range: bytes=%d-", _size-p.ChunkSize)
 					settings["getall"] = true
-					settings["timeout"] = interface{}(10.0)
+					settings["timeout"] = interface{}(p.Timeout)
 					check, err := NewFunctionHTTP(settings)
 					if err != nil {
 						continue
@@ -495,7 +495,7 @@ func (p *FunctionCDNINTE) Run() (CheckResult, error) {
 					settings["path"] = u.Path
 					settings["headers"] = fmt.Sprintf("Range: bytes=%d-", _size-p.ChunkSize)
 					settings["getall"] = true
-					settings["timeout"] = interface{}(10.0)
+					settings["timeout"] = interface{}(p.Timeout)
 					check, err := NewFunctionHTTP(settings)
 					if err != nil {
 						continue

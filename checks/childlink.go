@@ -376,6 +376,7 @@ func (p *FunctionCLINK) Run() (CheckResult, error) {
 			settings["getall"] = false
 			settings["hostname"] = _link.Host
 			settings["port"] = interface{}(80.0)
+			settings["timeout"] = interface{}(p.Timeout)
 			settings["path"] = fmt.Sprintf("%s?%s", _link.Path, _link.RawQuery)
 			check, err := NewFunctionHTTP(settings)
 			if err != nil {
@@ -435,6 +436,7 @@ func (p *FunctionCLINK) Run() (CheckResult, error) {
 			settings["getall"] = false
 			settings["hostname"] = _link.Host
 			settings["port"] = interface{}(443.0)
+			settings["timeout"] = interface{}(p.Timeout)
 			settings["path"] = fmt.Sprintf("%s?%s", _link.Path, _link.RawQuery)
 			check, err := NewFunctionHTTPS(settings)
 			if err != nil {
