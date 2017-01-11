@@ -364,7 +364,7 @@ func (p *FunctionSTATIC) Run() (CheckResult, error) {
 			settings["getall"] = true
 			settings["hostname"] = _link.Host
 			settings["port"] = interface{}(80.0)
-			settings["timeout"] = interface{}(p.Timeout)
+			settings["timeout"] = interface{}(p.Timeout.Seconds())
 			settings["path"] = fmt.Sprintf("%s?%s", _link.Path, _link.RawQuery)
 			check, err := NewFunctionHTTP(settings)
 			if err != nil {
@@ -423,7 +423,7 @@ func (p *FunctionSTATIC) Run() (CheckResult, error) {
 			settings["getall"] = true
 			settings["hostname"] = _link.Host
 			settings["port"] = interface{}(443.0)
-			settings["timeout"] = interface{}(p.Timeout)
+			settings["timeout"] = interface{}(p.Timeout.Seconds())
 			settings["path"] = fmt.Sprintf("%s?%s", _link.Path, _link.RawQuery)
 			check, err := NewFunctionHTTPS(settings)
 			if err != nil {
