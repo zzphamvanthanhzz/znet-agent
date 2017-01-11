@@ -54,7 +54,9 @@ func (i *CheckInstance) Update(c *m.CheckWithSlug, healthy bool) error {
 	}
 
 	i.Lock()
-	i.Ticker.Stop()
+	if i.Ticker != nil{
+		i.Ticker.Stop()
+	}
 	i.Check = c
 	i.Exec = checkfunc
 	i.Unlock()
