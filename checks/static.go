@@ -361,7 +361,7 @@ func (p *FunctionSTATIC) Run() (CheckResult, error) {
 			settings := map[string]interface{}{}
 			settings["product"] = p.Product
 			settings["method"] = "GET"
-			settings["getall"] = true
+			settings["getall"] = false
 			settings["hostname"] = _link.Host
 			settings["port"] = interface{}(80.0)
 			settings["timeout"] = interface{}(p.Timeout.Seconds())
@@ -420,7 +420,7 @@ func (p *FunctionSTATIC) Run() (CheckResult, error) {
 			settings := map[string]interface{}{}
 			settings["product"] = p.Product
 			settings["method"] = "GET"
-			settings["getall"] = true
+			settings["getall"] = false
 			settings["hostname"] = _link.Host
 			settings["port"] = interface{}(443.0)
 			settings["timeout"] = interface{}(p.Timeout.Seconds())

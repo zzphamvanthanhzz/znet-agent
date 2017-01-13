@@ -427,7 +427,7 @@ func (p *FunctionCDNINTE) Run() (CheckResult, error) {
 					settings["port"] = interface{}(80.0)
 					settings["path"] = u.Path
 					settings["headers"] = fmt.Sprintf("Range: bytes=%d-", _size-p.ChunkSize)
-					settings["getall"] = true
+					settings["getall"] = false
 					settings["timeout"] = interface{}(p.Timeout.Seconds())
 					check, err := NewFunctionHTTP(settings)
 					if err != nil {
@@ -494,7 +494,7 @@ func (p *FunctionCDNINTE) Run() (CheckResult, error) {
 					settings["port"] = interface{}(443.0)
 					settings["path"] = u.Path
 					settings["headers"] = fmt.Sprintf("Range: bytes=%d-", _size-p.ChunkSize)
-					settings["getall"] = true
+					settings["getall"] = false
 					settings["timeout"] = interface{}(p.Timeout.Seconds())
 					check, err := NewFunctionHTTP(settings)
 					if err != nil {
