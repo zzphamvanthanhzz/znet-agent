@@ -301,7 +301,7 @@ func NewFunctionHTTPS(settings map[string]interface{}) (*FunctionHTTPS, error) {
 	}
 
 	validatecert, ok := settings["validatecert"]
-	v := true
+	v := false
 	if ok {
 		v, ok = validatecert.(bool)
 		if !ok {
@@ -401,7 +401,8 @@ func (p *FunctionHTTPS) Run() (CheckResult, error) {
 	dns := _dns.Seconds() * 1000
 	result.DNS = &dns
 	if _dns > p.Timeout {
-		msg := fmt.Sprintf("HTTPS: Timeout resolving IP addr for %s", p.Host)
+		msg := fmt.Sprintf("HTTP: Timeout resolving IP addr for %s with DNS time: %f and Default timeout: %f",
+			p.Host, _dns.Seconds(), p.Timeout.Seconds())
 		result.Error = &msg
 		return result, nil
 	}

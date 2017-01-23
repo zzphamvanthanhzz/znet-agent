@@ -375,7 +375,8 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 	dns := _dns.Seconds() * 1000
 	result.DNS = &dns
 	if _dns > p.Timeout {
-		msg := fmt.Sprintf("HTTP: Timeout resolving IP addr for %s", p.Host)
+		msg := fmt.Sprintf("HTTP: Timeout resolving IP addr for %s with DNS time: %f and Default timeout: %f",
+			p.Host, _dns.Seconds(), p.Timeout.Seconds())
 		result.Error = &msg
 		return result, nil
 	}
