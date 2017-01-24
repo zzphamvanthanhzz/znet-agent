@@ -3,6 +3,7 @@ package checks
 import (
 	"errors"
 	"fmt"
+	"math"
 	"net/url"
 	"time"
 
@@ -409,8 +410,12 @@ func (p *FunctionSTATIC) Run() (CheckResult, error) {
 					total = *(result.Total) + m.Value
 					result.Total = &total
 				} else if m.Metric == "worldping.http.throughput" {
-					throughput = *(result.Throughput) + m.Value
-					result.Throughput = &throughput
+					if !math.IsInf(m.Value, 1) && !math.IsInf(m.Value, -1) {
+						throughput = *(result.Throughput) + m.Value
+						result.Throughput = &throughput
+					} else {
+						remain++
+					}
 				} else if m.Metric == "worldping.http.dataLength" {
 					datalength = *(result.DataLength) + m.Value
 					result.DataLength = &datalength
@@ -467,8 +472,12 @@ func (p *FunctionSTATIC) Run() (CheckResult, error) {
 					total = *(result.Total) + m.Value
 					result.Total = &total
 				} else if m.Metric == "worldping.https.throughput" {
-					throughput = *(result.Throughput) + m.Value
-					result.Throughput = &throughput
+					if !math.IsInf(m.Value, 1) && !math.IsInf(m.Value, -1) {
+						throughput = *(result.Throughput) + m.Value
+						result.Throughput = &throughput
+					} else {
+						remain++
+					}
 				} else if m.Metric == "worldping.https.dataLength" {
 					datalength = *(result.DataLength) + m.Value
 					result.DataLength = &datalength
