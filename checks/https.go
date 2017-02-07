@@ -16,6 +16,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/raintank/worldping-api/pkg/log"
 	m "github.com/raintank/worldping-api/pkg/models"
 	"github.com/zzphamvanthanhzz/znet-agent/probe"
 	"gopkg.in/raintank/schema.v1"
@@ -521,7 +522,7 @@ func (p *FunctionHTTPS) Run() (CheckResult, error) {
 		if err != nil {
 			if err == io.EOF {
 				datasize += count
-				fmt.Printf("HTTPS: %s EOF with size: %d \n content: %s\n", p.Host, datasize, body.String())
+				log.Debug("HTTPS: %s EOF with size: %d \n content: %s\n", p.Host, datasize, body.String())
 				break
 			} else {
 				msg := fmt.Sprintf("HTTPS: Error reading body from conn: %s with err: %s", sockaddr, err.Error())
@@ -565,7 +566,7 @@ func (p *FunctionHTTPS) Run() (CheckResult, error) {
 	//Recursive for 302 code here
 	if statuscode == 302 {
 		redirectLink := response.Header.Get("Location")
-		fmt.Printf("HTTPS: Redirect from %s:%d%s to %s\n", p.Host, p.Port, p.Path, redirectLink)
+		log.Debug("HTTPS: Redirect from %s:%d%s to %s\n", p.Host, p.Port, p.Path, redirectLink)
 		if redirectLink == "" {
 			msg := fmt.Sprintf("HTTPS: Empty Location in redirect Header from ori: %s:%d%s ", p.Host, p.Port, p.Path)
 			result.Error = &msg

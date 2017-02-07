@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"time"
 
+	"github.com/raintank/worldping-api/pkg/log"
 	m "github.com/raintank/worldping-api/pkg/models"
 	"github.com/zzphamvanthanhzz/znet-agent/probe"
 	"gopkg.in/raintank/schema.v1"
@@ -418,7 +419,7 @@ func (p *FunctionCDNINTE) Run() (CheckResult, error) {
 				}
 
 				chkUrl := fmt.Sprintf("%s://%s/%s", u.Scheme, cNode.Domain, u.Path)
-				fmt.Printf("Checking link is (%d): %s for host: %s with size: %d \n", p.NumFile-remain+1, chkUrl, u.Host, _size)
+				log.Debug("Checking link is (%d): %s for host: %s with size: %d \n", p.NumFile-remain+1, chkUrl, u.Host, _size)
 				settings := map[string]interface{}{}
 				if u.Scheme == "http" {
 					settings["product"] = p.Product

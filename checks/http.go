@@ -484,7 +484,7 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 		if err != nil {
 			if err == io.EOF {
 				datasize += count
-				fmt.Println("HTTP: %s EOF with size: %d", p.Host, datasize)
+				log.Debug("HTTP: %s EOF with size: %d", p.Host, datasize)
 				break
 			} else {
 				msg := fmt.Sprintf("HTTP: Error reading body from conn: %s with err: %s", sockaddr, err.Error())
@@ -494,7 +494,7 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 		}
 		datasize += count
 		if !p.GetAll && datasize >= Limit {
-			fmt.Printf("HTTP: %s%s Reach limit %f with size %f\n", p.Host, p.Path, float64(Limit), float64(datasize))
+			log.Debug("HTTP: %s%s Reach limit %f with size %f\n", p.Host, p.Path, float64(Limit), float64(datasize))
 			break
 		}
 	}
@@ -525,11 +525,11 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 		result.Error = &msg
 		return result, nil
 	}
-	fmt.Printf("HTTP: %s%s with size: %f\n", p.Host, p.Path, datalength)
+	log.Debug("HTTP: %s%s with size: %f\n", p.Host, p.Path, datalength)
 	//Recursive for 302 code here
 	if statuscode == 302 {
 		redirectLink := response.Header.Get("Location")
-		fmt.Printf("HTTP: Redirect from %s:%d%s to %s\n", p.Host, p.Port, p.Path, redirectLink)
+		log.Debug("HTTP: Redirect from %s:%d%s to %s\n", p.Host, p.Port, p.Path, redirectLink)
 		if redirectLink == "" {
 			msg := fmt.Sprintf("HTTP: Empty Location in redirect Header from ori: %s:%d%s ", p.Host, p.Port, p.Path)
 			result.Error = &msg

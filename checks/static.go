@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/raintank/worldping-api/pkg/log"
 	m "github.com/raintank/worldping-api/pkg/models"
 	"github.com/zzphamvanthanhzz/znet-agent/probe"
 	"gopkg.in/raintank/schema.v1"
@@ -387,7 +388,7 @@ func (p *FunctionSTATIC) Run() (CheckResult, error) {
 			checkSlug := m.CheckWithSlug{}
 			_retMetricsData := ret.Metrics(time.Now(), &checkSlug)
 			for _, m := range _retMetricsData {
-				fmt.Println("STATIC: ", link, m.Metric, m.Value)
+				log.Debug("STATIC: ", link, m.Metric, m.Value)
 				if m.Metric == "worldping.http.dns" {
 					dns = *(result.DNS) + m.Value
 					result.DNS = &dns
