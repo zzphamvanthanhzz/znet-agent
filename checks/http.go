@@ -520,14 +520,14 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 		msg := fmt.Sprintf("HTTP: Invalid status code %d from conn: %s", int64(statuscode), sockaddr)
 		result.Error = &msg
 		return result, nil
-	} else if statuscode != 200 && statuscode != 302 && statuscode != 206 {
+	} else if statuscode != 200 && statuscode != 302 && statuscode != 301 && statuscode != 206 {
 		msg := fmt.Sprintf("HTTP: Error code %d from conn: %s", int64(statuscode), sockaddr)
 		result.Error = &msg
 		return result, nil
 	}
 	log.Debug("HTTP: %s%s with size: %f\n", p.Host, p.Path, datalength)
 	//Recursive for 302 code here
-	if statuscode == 302 {
+	if statuscode == 302 || if statuscode == 301{
 		redirectLink := response.Header.Get("Location")
 		log.Debug("HTTP: Redirect from %s:%d%s to %s\n", p.Host, p.Port, p.Path, redirectLink)
 		if redirectLink == "" {
