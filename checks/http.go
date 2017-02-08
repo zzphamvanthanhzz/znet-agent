@@ -527,7 +527,7 @@ func (p *FunctionHTTP) Run() (CheckResult, error) {
 	}
 	log.Debug("HTTP: %s%s with size: %f\n", p.Host, p.Path, datalength)
 	//Recursive for 302 code here
-	if statuscode == 302 || if statuscode == 301{
+	if statuscode == 302 || statuscode == 301 {
 		redirectLink := response.Header.Get("Location")
 		log.Debug("HTTP: Redirect from %s:%d%s to %s\n", p.Host, p.Port, p.Path, redirectLink)
 		if redirectLink == "" {
